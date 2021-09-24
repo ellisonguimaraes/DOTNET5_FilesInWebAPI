@@ -12,11 +12,11 @@ namespace FilesProject.Controllers
     [Route("api/[controller]")]
     public class FileController : ControllerBase
     {
-        private readonly IFileServices _fileBusiness;
+        private readonly IFileServices _fileServices;
 
-        public FileController(IFileServices fileBusiness)
+        public FileController(IFileServices fileServices)
         {
-            _fileBusiness = fileBusiness;
+            _fileServices = fileServices;
         }
 
         [HttpPost("uploadFile")]
@@ -26,7 +26,7 @@ namespace FilesProject.Controllers
         [Produces("application/json")]
         public async Task<IActionResult> UploadOneFile([FromForm] IFormFile file)
         {
-            FileDetailDTO detail = await _fileBusiness.UploadFile(file);
+            FileDetailDTO detail = await _fileServices.UploadFile(file);
             return Ok(detail);
         }
 
@@ -37,7 +37,7 @@ namespace FilesProject.Controllers
         [Produces("application/json")]
         public async Task<IActionResult> UploadMultipleFile([FromForm] List<IFormFile> files)
         {
-            List<FileDetailDTO> details = await _fileBusiness.UploadManyFiles(files);
+            List<FileDetailDTO> details = await _fileServices.UploadManyFiles(files);
             return Ok(details);
         }
 
@@ -50,7 +50,7 @@ namespace FilesProject.Controllers
         public async Task<IActionResult> GetFileAsync(string fileName)
         {
             // Obtem o arquivo
-            byte[] buffer = _fileBusiness.GetFile(fileName);
+            byte[] buffer = _fileServices.GetFile(fileName);
 
             if (buffer != null)
             {
